@@ -20,7 +20,7 @@ public class CmdTestRunner : ITestRunner
         _writeOutput = writeOutput;
     }
 
-    public string Run(string test)
+    public string RunAndGetRawCoverage(string test)
     {
         var testResultsFullPath = Path.Combine(_projPath, TestResultsPath);
 

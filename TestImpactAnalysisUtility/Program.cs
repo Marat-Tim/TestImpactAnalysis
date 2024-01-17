@@ -2,15 +2,15 @@
 using TestImpactAnalysisUtility.Coverage.Impl;
 using TestImpactAnalysisUtility.Tests.Impl;
 
-var testsDll = @"C:\Users\User\Desktop\Курсач\Код\AspStudy\AspStudyTests\bin\Debug\net6.0\AspStudyTests.dll";
-var projPath = @"C:\Users\User\Desktop\Курсач\Код\AspStudy\AspStudyTests";
+var pathToTestsDll = @"C:\Users\User\Desktop\Курсач\Код\AspStudy\AspStudyTests\bin\Debug\net6.0\AspStudyTests.dll";
+var projectPath = @"C:\Users\User\Desktop\Курсач\Код\AspStudy\AspStudyTests";
 
-var tests = new TestsLoaderUsingDll(testsDll, new MsTestTemplate()).Load();
+var tests = new TestListByDllProcessing(pathToTestsDll, new MsTestTemplate());
 
 ICoverageRepository coverageRepository = new InFileCoverageRepository("coverage.json");
 
 ICoverageInfo coverageInfo =
-    new CoverageInfo(coverageRepository, new CmdTestRunner(projPath, false), new JsonCoverageExtractor());
+    new CoverageInfo(coverageRepository, new CmdTestRunner(projectPath, false), new JsonCoverageExtractor());
 
 
 foreach (var test in tests)

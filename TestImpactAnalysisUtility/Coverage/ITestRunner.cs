@@ -2,5 +2,5 @@
 
 public interface ITestRunner
 {
-    string Run(string test);
+    string RunAndGetRawCoverage(string test);
 }

@@ -5,6 +5,7 @@ namespace TestImpactAnalysisUtility.Coverage.Impl;
 public class InFileCoverageRepository : ICoverageRepository
 {
     private readonly string _path;
+
     private readonly IDictionary<string, ISet<string>> _testToCoverage;
 
     public InFileCoverageRepository(string path)

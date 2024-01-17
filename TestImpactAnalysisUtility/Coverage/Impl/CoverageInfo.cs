@@ -3,6 +3,7 @@
 public class CoverageInfo : ICoverageInfo
 {
     private readonly ICoverageExtractor _coverageExtractor;
+
     private readonly ICoverageRepository _coverageRepository;
 
     private readonly ITestRunner _testRunner;
@@ -23,8 +24,8 @@ public class CoverageInfo : ICoverageInfo
             return _coverageRepository.GetCoverage(test);
         }
 
-        var rawCoverage = _testRunner.Run(test);
-        var coverage = _coverageExtractor.Extract(rawCoverage);
+        var rawCoverage = _testRunner.RunAndGetRawCoverage(test);
+        var coverage = _coverageExtractor.ExtractFromRowData(rawCoverage);
 
         _coverageRepository.Save(test, coverage);
 

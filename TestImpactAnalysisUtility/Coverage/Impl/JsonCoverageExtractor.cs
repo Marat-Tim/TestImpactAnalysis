@@ -4,7 +4,7 @@ namespace TestImpactAnalysisUtility.Coverage.Impl;
 
 public class JsonCoverageExtractor : ICoverageExtractor
 {
-    public ISet<string> Extract(string coverage)
+    public ISet<string> ExtractFromRowData(string coverage)
     {
         var json = JsonSerializer.Deserialize<
             Dictionary<string, Dictionary<string, Dictionary<string, Dictionary<string, MethodCoverage>>>>
@@ -39,6 +39,7 @@ public class JsonCoverageExtractor : ICoverageExtractor
         // ReSharper disable once UnusedAutoPropertyAccessor.Local
         public Dictionary<string, int>? Lines { get; set; }
 
+        // ReSharper disable once UnusedMember.Local
         public List<BranchInfo>? Branches { get; set; }
 
         public bool IsCovered => Lines?.Values.Any(hits => hits != 0) ?? false;
