@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestImpactAnalysisUtility", "TestImpactAnalysisUtility\TestImpactAnalysisUtility.csproj", "{33E0E892-E9C6-43AC-A10E-7EA6BBFC20BA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestImpactAnalysisUtilityTests", "TestImpactAnalysisUtilityTests\TestImpactAnalysisUtilityTests.csproj", "{803A0C99-7E56-4A38-A8CF-372B53672FAD}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{33E0E892-E9C6-43AC-A10E-7EA6BBFC20BA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{33E0E892-E9C6-43AC-A10E-7EA6BBFC20BA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{33E0E892-E9C6-43AC-A10E-7EA6BBFC20BA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{33E0E892-E9C6-43AC-A10E-7EA6BBFC20BA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{803A0C99-7E56-4A38-A8CF-372B53672FAD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{803A0C99-7E56-4A38-A8CF-372B53672FAD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{803A0C99-7E56-4A38-A8CF-372B53672FAD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{803A0C99-7E56-4A38-A8CF-372B53672FAD}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
