@@ -2,5 +2,5 @@
 
 public interface ICoverageExtractor
 {
-    ISet<string> Extract(string coverage);
+    ISet<string> ExtractFromRowData(string coverage);
 }

@@ -4,5 +4,5 @@ namespace TestImpactAnalysisUtility.Tests;
 
 public interface ITestTemplate
 {
-    bool Check(MethodInfo methodInfo);
+    bool IsTest(MethodInfo methodInfo);
 }

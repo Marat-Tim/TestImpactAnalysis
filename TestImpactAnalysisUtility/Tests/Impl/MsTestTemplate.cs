@@ -5,7 +5,7 @@ namespace TestImpactAnalysisUtility.Tests.Impl;
 
 public class MsTestTemplate : ITestTemplate
 {
-    public bool Check(MethodInfo methodInfo)
+    public bool IsTest(MethodInfo methodInfo)
     {
         return methodInfo.DeclaringType.GetCustomAttribute<TestClassAttribute>() != null &&
                methodInfo.GetCustomAttribute<TestMethodAttribute>() != null;
