@@ -22,7 +22,7 @@ public class JsonCoverageExtractor : ICoverageExtractor
                     {
                         if (coverageInfo.IsCovered)
                         {
-                            files.Add(file);
+                            files.Add(file.Replace(@"\\", @"\"));
                         }
                     }
                 }
