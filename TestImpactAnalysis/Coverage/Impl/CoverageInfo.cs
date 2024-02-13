@@ -1,4 +1,4 @@
-﻿namespace TestImpactAnalysisUtility.Coverage.Impl;
+﻿namespace TestImpactAnalysis.Coverage.Impl;
 
 public class CoverageInfo : ICoverageInfo
 {
@@ -17,7 +17,7 @@ public class CoverageInfo : ICoverageInfo
         _coverageExtractor = coverageExtractor;
     }
 
-    public ISet<string> GetDependentFiles(string test)
+    public ISet<FileCoverage> GetDependentMethods(string test)
     {
         if (_coverageRepository.Exists(test))
         {

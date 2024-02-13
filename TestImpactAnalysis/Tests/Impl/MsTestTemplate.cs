@@ -1,7 +1,7 @@
 ﻿using System.Reflection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace TestImpactAnalysisUtility.Tests.Impl;
+namespace TestImpactAnalysis.Tests.Impl;
 
 public class MsTestTemplate : ITestTemplate
 {

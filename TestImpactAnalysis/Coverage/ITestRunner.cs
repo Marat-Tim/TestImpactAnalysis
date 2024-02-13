@@ -1,4 +1,4 @@
-﻿namespace TestImpactAnalysisUtility.Coverage;
+﻿namespace TestImpactAnalysis.Coverage;
 
 public interface ITestRunner
 {
