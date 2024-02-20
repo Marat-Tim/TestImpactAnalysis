@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics;
 using System.Text;
 
-namespace TestImpactAnalysisUtility.Coverage.Impl;
+namespace TestImpactAnalysis.Coverage.Impl;
 
 public class CmdTestRunner : ITestRunner
 {
@@ -11,14 +11,13 @@ public class CmdTestRunner : ITestRunner
         "/C dotnet test --collect:\"XPlat Code Coverage;Format=json\" --filter \"FullyQualifiedName~{0}\"";
 
     private readonly string _projPath;
-
-    private readonly bool _writeOutput;
-
-    public CmdTestRunner(string projPath, bool writeOutput = true)
+    
+    public CmdTestRunner(string projPath)
     {
         _projPath = projPath;
-        _writeOutput = writeOutput;
     }
+
+    public bool WriteOutput { private get; init; }
 
     public string RunAndGetRawCoverage(string test)
     {
@@ -35,18 +34,22 @@ public class CmdTestRunner : ITestRunner
             FileName = "cmd.exe",
             Arguments = string.Format(Command, test),
             WorkingDirectory = _projPath,
-            RedirectStandardOutput = !_writeOutput
+            RedirectStandardOutput = true,
+            StandardOutputEncoding = Encoding.UTF8
         };
 
+        if (WriteOutput)
+        {
+            Console.WriteLine($"Run test {test}");
+        }
+        
+        string path;
         using (var process = new Process { StartInfo = startInfo })
         {
             process.Start();
+            path = process.StandardOutput.ReadToEnd().Split("\n")[^2].Trim();
             process.WaitForExit();
         }
-
-        var path = Directory.GetFiles(
-            Directory.GetDirectories(testResultsFullPath)[0]
-        )[0];
         var coverage = File.ReadAllText(path, Encoding.UTF8);
         return coverage;
     }

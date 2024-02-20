@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Reflection;
 
-namespace TestImpactAnalysisUtility.Tests.Impl;
+namespace TestImpactAnalysis.Tests.Impl;
 
 public class TestListByDllProcessing : IEnumerable<string>
 {
