@@ -17,7 +17,7 @@ public class CmdTestRunner : ITestRunner
         _projPath = projPath;
     }
 
-    public bool WriteOutput { private get; init; }
+    public OutputDetalization WriteOutput { private get; init; }
 
     public string RunAndGetRawCoverage(string test)
     {
@@ -35,22 +35,39 @@ public class CmdTestRunner : ITestRunner
             Arguments = string.Format(Command, test),
             WorkingDirectory = _projPath,
             RedirectStandardOutput = true,
+            RedirectStandardError = true,
             StandardOutputEncoding = Encoding.UTF8
         };
 
-        if (WriteOutput)
-        {
-            Console.WriteLine($"Run test {test}");
-        }
-        
-        string path;
+        string path, text;
         using (var process = new Process { StartInfo = startInfo })
         {
             process.Start();
-            path = process.StandardOutput.ReadToEnd().Split("\n")[^2].Trim();
+            text = process.StandardOutput.ReadToEnd();
+            path = text.Split("\n")[^2].Trim();
             process.WaitForExit();
         }
+
+        switch (WriteOutput)
+        {
+            case OutputDetalization.None:
+                break;
+            case OutputDetalization.Minimal:
+                Console.WriteLine($"Run test {test}");
+                break;
+            case OutputDetalization.All:
+                Console.WriteLine(text);
+                break;
+            default:
+                throw new NotImplementedException("Unknown enum value");
+        }
+        
         var coverage = File.ReadAllText(path, Encoding.UTF8);
         return coverage;
+    }
+
+    public enum OutputDetalization
+    {
+        None, Minimal, All
     }
 }

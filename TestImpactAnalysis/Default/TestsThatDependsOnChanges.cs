@@ -13,34 +13,37 @@ public class TestsThatDependsOnChanges : IEnumerable<string>
     
     private readonly string _pathToTestsProject;
     
-    private readonly string _pathToWorkProject;
+    private readonly string _pathToDirectoryWithGit;
     
     private readonly string _repositoryFileName;
+    
+    private readonly CmdTestRunner.OutputDetalization _writeDebug;
 
-    public TestsThatDependsOnChanges(string pathToTestsDll, string pathToTestsProject, string pathToWorkProject, 
-        string repositoryFileName = "coverage.json")
+    public TestsThatDependsOnChanges(string pathToTestsDll, string pathToTestsProject, string pathToDirectoryWithGit, 
+        string repositoryFileName = "coverage.json",
+        CmdTestRunner.OutputDetalization writeDebug = CmdTestRunner.OutputDetalization.None)
     {
         _pathToTestsDll = pathToTestsDll;
         _pathToTestsProject = pathToTestsProject;
-        _pathToWorkProject = pathToWorkProject;
+        _pathToDirectoryWithGit = pathToDirectoryWithGit;
         _repositoryFileName = repositoryFileName;
+        _writeDebug = writeDebug;
     }
     
     public IEnumerator<string> GetEnumerator()
     {
-        IEnumerable<string> tests = new TestListByDllProcessing(_pathToTestsDll, new MsTestTemplate());
+        IEnumerable<string> tests = new XunitTestList(_pathToTestsDll);
 
         ICoverageRepository coverageRepository = new InFileCoverageRepository(
             Path.Combine(_pathToTestsProject, _repositoryFileName));
 
-        ITestRunner testRunner = new CmdTestRunner(_pathToWorkProject);
+        ITestRunner testRunner = new CmdTestRunner(_pathToDirectoryWithGit) { WriteOutput = _writeDebug };
 
-        ICoverageExtractor coverageExtractor = new JsonCoverageExtractor(_pathToWorkProject);
+        ICoverageExtractor coverageExtractor = new FileCoverageExtractorFromJson(_pathToDirectoryWithGit);
 
         ICoverageInfo coverageInfo = new CoverageInfo(coverageRepository, testRunner, coverageExtractor);
 
-        IChanges changes =
-            new ChangesUsingChangedLines(new FileToChangedLinesBetweenTwoLastGitCommits(_pathToWorkProject));
+        IChanges changes = new Changes(new GitChangedFiles(_pathToDirectoryWithGit));
 
         List<string> testsThatDependsOnChanges =
             new TestImpactAnalysis.TestsThatDependsOnChanges(tests, coverageInfo, changes).ToList();

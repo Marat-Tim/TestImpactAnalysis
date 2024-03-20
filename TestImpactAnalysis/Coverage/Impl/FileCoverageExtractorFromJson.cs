@@ -1,52 +1,53 @@
-﻿using System.Text.Json;
+﻿using System.Reflection.Emit;
+using System.Text.Json;
 
 namespace TestImpactAnalysis.Coverage.Impl;
 
-public class JsonCoverageExtractor : ICoverageExtractor
+public class FileCoverageExtractorFromJson : ICoverageExtractor
 {
     private readonly string _workingProjectPath;
 
-    public JsonCoverageExtractor(string workingProjectPath)
+    public FileCoverageExtractorFromJson(string workingProjectPath)
     {
         _workingProjectPath = workingProjectPath;
     }
-    
-    public ISet<FileCoverage> ExtractFromRowData(string coverage)
+
+    public ISet<string> ExtractFromRowData(string coverage)
     {
         var json = JsonSerializer.Deserialize<
             Dictionary<string, Dictionary<string, Dictionary<string, Dictionary<string, MethodCoverage>>>>
         >(coverage);
 
-        ISet<FileCoverage> files = new HashSet<FileCoverage>();
+        ISet<string> coveredFiles = new HashSet<string>();
 
         foreach (var (dll, fileToClass) in json)
         {
             foreach (var (file, classToMethod) in fileToClass)
             {
-                ISet<Impl.MethodCoverage> coveredMethods = new HashSet<Impl.MethodCoverage>();
-                foreach (var (clazz, methodToCoverage) in classToMethod)
+                if (IsFileCovered(classToMethod))
                 {
-                    foreach (var (method, coverageInfo) in methodToCoverage)
-                    {
-                        if (coverageInfo.IsCovered)
-                        {
-                            var coveredLines = coverageInfo.Lines.Keys.Select(int.Parse).ToArray();
-                            coveredMethods.Add(new Impl.MethodCoverage(coveredLines.Min(),
-                                coveredLines.Max()));
-                        }
-                    }
-                }
-
-                if (coveredMethods.Count() != 0)
-                {
-                    string path = Path.GetRelativePath(_workingProjectPath, 
-                        file.Replace(@"\\", @"\"));
-                    files.Add(new FileCoverage(path, coveredMethods));
+                    coveredFiles.Add(Path.GetRelativePath(_workingProjectPath, file));
                 }
             }
         }
 
-        return files;
+        return coveredFiles;
+    }
+
+    private bool IsFileCovered(Dictionary<string, Dictionary<string, MethodCoverage>> classToMethod)
+    {
+        foreach (var (clazz, methodToCoverage) in classToMethod)
+        {
+            foreach (var (method, coverageInfo) in methodToCoverage)
+            {
+                if (coverageInfo.IsCovered)
+                {
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 
     // ReSharper disable once ClassNeverInstantiated.Local

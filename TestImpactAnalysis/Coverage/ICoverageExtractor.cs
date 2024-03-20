@@ -4,5 +4,5 @@ namespace TestImpactAnalysis.Coverage;
 
 public interface ICoverageExtractor
 {
-    ISet<FileCoverage> ExtractFromRowData(string coverage);
+    ISet<string> ExtractFromRowData(string coverage);
 }

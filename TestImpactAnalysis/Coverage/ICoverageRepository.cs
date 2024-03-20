@@ -4,9 +4,9 @@ namespace TestImpactAnalysis.Coverage;
 
 public interface ICoverageRepository
 {
-    void Save(string test, ISet<FileCoverage> coverage);
+    void Save(string test, ISet<string> coverage);
 
-    ISet<FileCoverage> GetCoverage(string test);
+    ISet<string> GetCoverage(string test);
 
     bool Exists(string test);
 }

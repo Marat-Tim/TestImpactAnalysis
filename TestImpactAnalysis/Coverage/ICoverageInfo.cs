@@ -4,5 +4,5 @@ namespace TestImpactAnalysis.Coverage;
 
 public interface ICoverageInfo
 {
-    ISet<FileCoverage> GetDependentMethods(string test);
+    ISet<string> GetDependentMethods(string test);
 }

@@ -17,7 +17,7 @@ public class CoverageInfo : ICoverageInfo
         _coverageExtractor = coverageExtractor;
     }
 
-    public ISet<FileCoverage> GetDependentMethods(string test)
+    public ISet<string> GetDependentMethods(string test)
     {
         if (_coverageRepository.Exists(test))
         {

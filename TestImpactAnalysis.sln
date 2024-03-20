@@ -4,6 +4,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestImpactAnalysis", "TestI
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestImpactAnalysis.IntegrationTests", "TestImpactAnalysis.IntegrationTests\TestImpactAnalysis.IntegrationTests.csproj", "{810EB25E-476F-4769-9A39-0E2D5790641A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ForTests", "ForTests\ForTests.csproj", "{8022C6EE-38C1-42C8-924A-9AA7E2334DF1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,5 +20,9 @@ Global
 		{810EB25E-476F-4769-9A39-0E2D5790641A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{810EB25E-476F-4769-9A39-0E2D5790641A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{810EB25E-476F-4769-9A39-0E2D5790641A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8022C6EE-38C1-42C8-924A-9AA7E2334DF1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8022C6EE-38C1-42C8-924A-9AA7E2334DF1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8022C6EE-38C1-42C8-924A-9AA7E2334DF1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8022C6EE-38C1-42C8-924A-9AA7E2334DF1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
