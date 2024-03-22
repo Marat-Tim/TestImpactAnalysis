@@ -1,6 +1,6 @@
 ﻿using System.Collections;
-using System.Reflection;
-using Xunit;
+using System.Diagnostics;
+using System.Text;
 
 namespace TestImpactAnalysis.Tests.Impl;
 
@@ -12,18 +12,26 @@ public class XunitTestList : IEnumerable<string>
     {
         _pathToTestsDll = pathToTestsDll;
     }
-    
+
     public IEnumerator<string> GetEnumerator()
     {
-        Assembly.LoadFrom(_pathToTestsDll);
-        
-        var controller = new XunitFrontController(AppDomainSupport.Denied, _pathToTestsDll, shadowCopy: true);
-        using var visitor = new TestDiscoverySink();
-        controller.Find(false, visitor, TestFrameworkOptions.ForDiscovery());
-        visitor.Finished.WaitOne();
-        var tests = visitor.TestCases.Select(testCase => testCase.DisplayName).ToList(); 
-        visitor.Finished.Dispose();
-        return tests.GetEnumerator();
+#warning Change working with paths
+        //TODO Change working with paths
+
+        var startInfo = new ProcessStartInfo()
+        {
+            WindowStyle = ProcessWindowStyle.Hidden,
+            FileName =
+                @"C:\Users\User\Desktop\Курсач\Код\TestImpactAnalysis\TestDiscoverer\bin\Debug\net6.0\TestDiscoverer.exe",
+            Arguments = $"\"{_pathToTestsDll}\"",
+            RedirectStandardOutput = true,
+            StandardOutputEncoding = Encoding.UTF8
+        };
+        using var process = new Process { StartInfo = startInfo };
+        process.Start();
+        string output = process.StandardOutput.ReadToEnd();
+        process.WaitForExit();
+        return output.Split(Environment.NewLine, StringSplitOptions.RemoveEmptyEntries).ToList().GetEnumerator();
     }
 
     IEnumerator IEnumerable.GetEnumerator()

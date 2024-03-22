@@ -6,6 +6,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestImpactAnalysis.Integrat
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ForTests", "ForTests\ForTests.csproj", "{8022C6EE-38C1-42C8-924A-9AA7E2334DF1}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestDiscoverer", "TestDiscoverer\TestDiscoverer.csproj", "{AE49054E-9426-4273-8B4F-F2212B6145C9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -24,5 +26,9 @@ Global
 		{8022C6EE-38C1-42C8-924A-9AA7E2334DF1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8022C6EE-38C1-42C8-924A-9AA7E2334DF1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8022C6EE-38C1-42C8-924A-9AA7E2334DF1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AE49054E-9426-4273-8B4F-F2212B6145C9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AE49054E-9426-4273-8B4F-F2212B6145C9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AE49054E-9426-4273-8B4F-F2212B6145C9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AE49054E-9426-4273-8B4F-F2212B6145C9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

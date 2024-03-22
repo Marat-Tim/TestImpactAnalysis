@@ -1,0 +1,3 @@
+﻿In this project, the code of the console application, which for the specified unit project outputs a list of all tests in the format FullyQualifiedName
+
+Next, this application is used in [TestImpactAnalysis](./../TestImpactAnalysis). This is a bad hack. It is needed because if you upload an assembly with tests to the main application, then this file with this assembly is blocked and you cannot run the tests. It's better to fix this hack in the future(I don't know how yet)
