@@ -33,9 +33,10 @@ start at 20.03.2024
 
 - [x] Unload assembly after discovering tests in [XunitTestList](./Tests/Impl/XunitTestList.cs)
 - [ ] Replace in file repository with database
-- [ ] Replace comparison of HEAD and HEAD^1 with comparison of specified commits
+- [x] Replace comparison of HEAD and HEAD^1 with comparison of specified commits
 - [ ] Write class that use AST parsing to find changed methods
 - [ ] Add unit tests
 - [ ] Add more integration tests
 - [ ] Replace running test in process with library call
+- [ ] Add logger
 

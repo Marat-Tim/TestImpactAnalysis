@@ -15,17 +15,26 @@ public class TestsThatDependsOnChanges : IEnumerable<string>
     
     private readonly string _pathToDirectoryWithGit;
     
+    private readonly string _commit1Hash;
+    
+    private readonly string _commit2Hash;
+
     private readonly string _repositoryFileName;
     
     private readonly CmdTestRunner.OutputDetalization _writeDebug;
 
-    public TestsThatDependsOnChanges(string pathToTestsDll, string pathToTestsProject, string pathToDirectoryWithGit, 
+    public TestsThatDependsOnChanges(string pathToTestsDll, 
+        string pathToTestsProject, 
+        string pathToDirectoryWithGit, 
+        string commit1Hash, string commit2Hash,
         string repositoryFileName = "coverage.json",
         CmdTestRunner.OutputDetalization writeDebug = CmdTestRunner.OutputDetalization.None)
     {
         _pathToTestsDll = pathToTestsDll;
         _pathToTestsProject = pathToTestsProject;
         _pathToDirectoryWithGit = pathToDirectoryWithGit;
+        _commit1Hash = commit1Hash;
+        _commit2Hash = commit2Hash;
         _repositoryFileName = repositoryFileName;
         _writeDebug = writeDebug;
     }
@@ -43,7 +52,8 @@ public class TestsThatDependsOnChanges : IEnumerable<string>
 
         ICoverageInfo coverageInfo = new CoverageInfo(coverageRepository, testRunner, coverageExtractor);
 
-        IChanges changes = new Changes(new GitChangedFiles(_pathToDirectoryWithGit));
+        IChanges changes = new Changes(
+            new GitChangedFiles(_pathToDirectoryWithGit, _commit1Hash, _commit2Hash));
 
         List<string> testsThatDependsOnChanges =
             new TestImpactAnalysis.TestsThatDependsOnChanges(tests, coverageInfo, changes).ToList();

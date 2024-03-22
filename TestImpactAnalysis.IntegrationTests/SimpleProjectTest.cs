@@ -20,31 +20,18 @@ public class SimpleProjectTest
     public void FirstRunTest()
     {
         string resourcesPath = Path.Combine("Resources", "SimpleProject");
-        if (Directory.Exists(resourcesPath))
-        {
-            throw new Exception($"{resourcesPath} directory has not been deleted, delete it manually");
-        }
-        try
+        WithResourcesRemoval(resourcesPath, _testOutputHelper, () =>
         {
             CloneRepository("https://github.com/testimpactanalysis/SimpleProject.git", resourcesPath);
+            string commit1Hash = "151bb98a878fa7fb544c0e96f3735a118ba4fa2f";
+            string commit2Hash = "62fb8c7767f085cc2836b781ac1a229133cc3702";
             string pathToDirectoryWithGit = resourcesPath;
             string pathToTestsProject = Path.Combine(pathToDirectoryWithGit, "SimpleProject.Tests");
             string pathToTestsDll =
                 BuildProjectAndGetDll(Path.Combine(pathToTestsProject, "SimpleProject.Tests.csproj"));
             Assert.Equal(new[] { "SimpleProject.Tests.ATest.FooTest" },
-                new Default.TestsThatDependsOnChanges(pathToTestsDll, pathToTestsProject, pathToDirectoryWithGit));
-        }
-        finally
-        {
-            try
-            {
-                DeleteRepository(resourcesPath);
-            }
-            catch (Exception ex)
-            {
-                _testOutputHelper.WriteLine($"Couldn't delete directory {resourcesPath}, delete it manually");
-                _testOutputHelper.WriteLine(ex.Message);
-            }
-        }
+                new Default.TestsThatDependsOnChanges(pathToTestsDll, 
+                    pathToTestsProject, pathToDirectoryWithGit, commit1Hash, commit2Hash));
+        });
     }
 }

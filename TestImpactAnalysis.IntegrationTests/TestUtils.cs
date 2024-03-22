@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics;
 using System.IO;
 using LibGit2Sharp;
+using Xunit.Abstractions;
 
 namespace TestImpactAnalysis.IntegrationTests;
 
@@ -33,5 +34,29 @@ public static class TestUtils
             File.SetAttributes(file, FileAttributes.Normal);
         }
         Directory.Delete(path, recursive: true);
+    }
+
+    public static void WithResourcesRemoval(string resourcesPath, ITestOutputHelper testOutputHelper, Action action)
+    {
+        if (Directory.Exists(resourcesPath))
+        {
+            throw new Exception($"{resourcesPath} directory has not been deleted, delete it manually");
+        }
+        try
+        {
+            action();
+        }
+        finally
+        {
+            try
+            {
+                DeleteRepository(resourcesPath);
+            }
+            catch (Exception ex)
+            {
+                testOutputHelper.WriteLine($"Couldn't delete directory {resourcesPath}, delete it manually");
+                testOutputHelper.WriteLine(ex.Message);
+            }
+        }
     }
 }
