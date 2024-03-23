@@ -1,7 +1,5 @@
 ﻿using System.Diagnostics;
-using System.IO;
 using LibGit2Sharp;
-using Xunit.Abstractions;
 
 namespace TestImpactAnalysis.IntegrationTests;
 
@@ -27,7 +25,7 @@ public static class TestUtils
         Repository.Clone(url, path);
     }
 
-    public static void DeleteRepository(string path)
+    public static void DeleteDirectory(string path)
     {
         foreach (var file in Directory.GetFiles(path, "*", SearchOption.AllDirectories))
         {
@@ -36,11 +34,18 @@ public static class TestUtils
         Directory.Delete(path, recursive: true);
     }
 
-    public static void WithResourcesRemoval(string resourcesPath, ITestOutputHelper testOutputHelper, Action action)
+    public static void WithResourcesRemoval(string resourcesPath, Action action)
     {
         if (Directory.Exists(resourcesPath))
         {
-            throw new Exception($"{resourcesPath} directory has not been deleted, delete it manually");
+            try
+            {
+                DeleteDirectory(resourcesPath);
+            }
+            catch (IOException e)
+            {
+                throw new Exception($"{resourcesPath} directory has not been deleted, delete it manually", e);
+            }
         }
         try
         {
@@ -50,12 +55,15 @@ public static class TestUtils
         {
             try
             {
-                DeleteRepository(resourcesPath);
+                DeleteDirectory(resourcesPath);
             }
-            catch (Exception ex)
+            catch (IOException e)
             {
-                testOutputHelper.WriteLine($"Couldn't delete directory {resourcesPath}, delete it manually");
-                testOutputHelper.WriteLine(ex.Message);
+                var pathToGit = Path.Combine(resourcesPath, ".git");
+                if (Directory.Exists(pathToGit))
+                {
+                    throw new Exception($"Couldn't delete directory {pathToGit}, delete it manually", e);
+                }
             }
         }
     }

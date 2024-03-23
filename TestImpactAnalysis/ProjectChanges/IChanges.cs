@@ -1,7 +1,4 @@
-﻿using TestImpactAnalysis.Coverage;
-using TestImpactAnalysis.Coverage.Impl;
-
-namespace TestImpactAnalysis.ProjectChanges;
+﻿namespace TestImpactAnalysis.ProjectChanges;
 
 public interface IChanges
 {

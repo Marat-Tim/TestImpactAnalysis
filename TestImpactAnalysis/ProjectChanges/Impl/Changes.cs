@@ -1,6 +1,4 @@
-﻿using LibGit2Sharp;
-
-namespace TestImpactAnalysis.ProjectChanges.Impl;
+﻿namespace TestImpactAnalysis.ProjectChanges.Impl;
 
 public class Changes : IChanges
 {

@@ -32,11 +32,19 @@ For each test, we look at whether its coverage intersects with the changes in th
 start at 20.03.2024
 
 - [x] Unload assembly after discovering tests in [XunitTestList](./Tests/Impl/XunitTestList.cs)
-- [ ] Replace in file repository with database
+- [x] Replace in file repository with database(done but crooked)
 - [x] Replace comparison of HEAD and HEAD^1 with comparison of specified commits
 - [ ] Write class that use AST parsing to find changed methods
 - [ ] Add unit tests
 - [ ] Add more integration tests
-- [ ] Replace running test in process with library call
 - [ ] Add logger
+- [ ] Add DI container
+- [ ] Replace the search for a list of tests in a separate process with a normal option
+- [ ] Add CI-CD pipeline
+- [ ] Add README for whole project
 
+# Global TODO:
+
+- [ ] Change calculation from files to methods or code blocks
+- [ ] Add tracking changed tests
+- [ ] Replace running test in process with library call

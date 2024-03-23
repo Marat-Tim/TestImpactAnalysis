@@ -1,6 +1,4 @@
-﻿using TestImpactAnalysis.Coverage.Impl;
-
-namespace TestImpactAnalysis.Coverage;
+﻿namespace TestImpactAnalysis.Coverage;
 
 public interface ICoverageRepository
 {
