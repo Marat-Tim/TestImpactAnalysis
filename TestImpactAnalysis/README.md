@@ -42,9 +42,10 @@ start at 20.03.2024
 - [ ] Replace the search for a list of tests in a separate process with a normal option
 - [ ] Add CI-CD pipeline
 - [ ] Add README for whole project
+- [ ] Add documentation as comments
 
 # Global TODO:
 
 - [ ] Change calculation from files to methods or code blocks
-- [ ] Add tracking changed tests
+- [x] Add tracking changed tests
 - [ ] Replace running test in process with library call

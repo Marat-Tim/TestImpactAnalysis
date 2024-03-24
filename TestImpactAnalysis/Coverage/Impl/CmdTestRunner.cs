@@ -8,7 +8,8 @@ public class CmdTestRunner : ITestRunner
     private const string TestResultsPath = "TestResults";
 
     private const string Command =
-        "/C dotnet test --collect:\"XPlat Code Coverage;Format=json\" --filter \"FullyQualifiedName~{0}\"";
+        "/C dotnet test --collect:\"XPlat Code Coverage;Format=json\" --filter \"FullyQualifiedName~{0}\" -- " +
+        "DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.IncludeTestAssembly=true";
 
     private readonly string _projPath;
     
