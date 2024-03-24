@@ -40,7 +40,7 @@ start at 20.03.2024
 - [ ] Add logger
 - [ ] Add DI container
 - [ ] Replace the search for a list of tests in a separate process with a normal option
-- [ ] Add CI-CD pipeline
+- [x] Add CI-CD pipeline
 - [ ] Add README for whole project
 - [ ] Add documentation as comments
 
