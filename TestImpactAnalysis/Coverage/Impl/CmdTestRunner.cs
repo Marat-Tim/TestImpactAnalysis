@@ -8,7 +8,7 @@ public class CmdTestRunner : ITestRunner
     private const string TestResultsPath = "TestResults";
 
     private const string Command =
-        "/C dotnet test --collect:\"XPlat Code Coverage;Format=json\" --filter \"FullyQualifiedName~{0}\" -- " +
+        "test --collect:\"XPlat Code Coverage;Format=json\" --filter \"FullyQualifiedName~{0}\" -- " +
         "DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.IncludeTestAssembly=true";
 
     private readonly string _projPath;
@@ -32,7 +32,7 @@ public class CmdTestRunner : ITestRunner
         var startInfo = new ProcessStartInfo
         {
             WindowStyle = ProcessWindowStyle.Hidden,
-            FileName = "cmd.exe",
+            FileName = "dotnet",
             Arguments = string.Format(Command, test),
             WorkingDirectory = _projPath,
             RedirectStandardOutput = true,
@@ -44,9 +44,10 @@ public class CmdTestRunner : ITestRunner
         using (var process = new Process { StartInfo = startInfo })
         {
             process.Start();
-            text = process.StandardOutput.ReadToEnd();
-            path = text.Split("\n")[^2].Trim();
             process.WaitForExit();
+            text = process.StandardOutput.ReadToEnd();
+            path = (text.Split(Environment.NewLine).FirstOrDefault(str => str.Contains("coverage.json"))
+                   ?? throw new Exception("File with coverage not found")).Trim();
         }
 
         switch (WriteOutput)
@@ -62,7 +63,6 @@ public class CmdTestRunner : ITestRunner
             default:
                 throw new NotImplementedException("Unknown enum value");
         }
-        
         var coverage = File.ReadAllText(path, Encoding.UTF8);
         return coverage;
     }

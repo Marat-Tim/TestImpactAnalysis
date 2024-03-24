@@ -10,7 +10,7 @@ public static class TestUtils
         var startInfo = new ProcessStartInfo
         {
             WindowStyle = ProcessWindowStyle.Hidden,
-            FileName = "dotnet.exe",
+            FileName = "dotnet",
             Arguments = $"build \"{pathToCsproj}\""
         };
         using Process process = new Process { StartInfo = startInfo };

@@ -21,7 +21,7 @@ public class XunitTestList : IEnumerable<string>
         var startInfo = new ProcessStartInfo()
         {
             WindowStyle = ProcessWindowStyle.Hidden,
-            FileName = "./../../../../TestDiscoverer/bin/Debug/net6.0/TestDiscoverer.exe",
+            FileName = "./../../../../TestDiscoverer/bin/Debug/net6.0/TestDiscoverer",
             Arguments = $"\"{_pathToTestsDll}\"",
             RedirectStandardOutput = true,
             StandardOutputEncoding = Encoding.UTF8
