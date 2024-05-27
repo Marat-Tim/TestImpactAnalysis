@@ -47,8 +47,18 @@ public class TestsThatDependsOnChanges : IEnumerable<string>
     {
         IEnumerable<string> tests = new XunitTestList(_pathToTestsDll);
 
-        using SqlCoverageRepository coverageRepository = 
-            new SqlCoverageRepository(_dbConnection, _databaseType);
+        ICoverageRepository coverageRepository;
+        switch (_databaseType)
+        {
+            case DatabaseType.SQLite:
+                coverageRepository = new SqliteCoverageRepository(_dbConnection);
+                break;
+            case DatabaseType.PostgreSQL:
+                coverageRepository = new PostgresqlCoverageRepository(_dbConnection);
+                break;
+            default:
+                throw new NotImplementedException();
+        }
 
         ITestRunner testRunner = new CmdTestRunner(_pathToTestsProject) { WriteOutput = _writeDebug };
 
