@@ -13,7 +13,8 @@
           <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
         <PackageReference Include="LibGit2Sharp" Version="0.29.0" />
-        <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="6.0.22" />
+        <PackageReference Include="Microsoft.Data.Sqlite" Version="9.0.0-preview.4.24267.1" />
+        <PackageReference Include="Microsoft.DataTools.PostgreSql.Sdk" Version="0.1.0" />
         <PackageReference Include="MSTest.TestFramework" Version="3.2.0-preview.23623.1" />
         <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="6.0.22" />
         <PackageReference Include="xunit.extensibility.execution" Version="2.7.0" />
