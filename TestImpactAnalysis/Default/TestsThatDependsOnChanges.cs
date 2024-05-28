@@ -1,4 +1,6 @@
 ﻿using System.Collections;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Abstractions;
 using TestImpactAnalysis.Coverage;
 using TestImpactAnalysis.Coverage.Impl;
 using TestImpactAnalysis.Database;
@@ -24,14 +26,13 @@ public class TestsThatDependsOnChanges : IEnumerable<string>
     
     private readonly DatabaseType _databaseType;
 
-    private readonly CmdTestRunner.OutputDetalization _writeDebug;
+    public ILogger Logger { init; private get; } = NullLogger.Instance;
 
     public TestsThatDependsOnChanges(string pathToTestsDll, 
         string pathToTestsProject, 
         string pathToDirectoryWithGit, 
         string commit1Hash, string commit2Hash,
-        string dbConnection, DatabaseType databaseType,
-        CmdTestRunner.OutputDetalization writeDebug = CmdTestRunner.OutputDetalization.None)
+        string dbConnection, DatabaseType databaseType)
     {
         _pathToTestsDll = pathToTestsDll;
         _pathToTestsProject = pathToTestsProject;
@@ -40,30 +41,33 @@ public class TestsThatDependsOnChanges : IEnumerable<string>
         _commit2Hash = commit2Hash;
         _dbConnection = dbConnection;
         _databaseType = databaseType;
-        _writeDebug = writeDebug;
     }
     
     public IEnumerator<string> GetEnumerator()
     {
-        IEnumerable<string> tests = new XunitTestList(_pathToTestsDll);
+        IEnumerable<string> tests = new XunitTestList(_pathToTestsDll, Logger);
 
-        using SqlCoverageRepository coverageRepository = 
-            new SqlCoverageRepository(_dbConnection, _databaseType);
+        string dbName = _databaseType == DatabaseType.SQLite ? "sqlite" : "postgresql";
+        Logger.LogDebug($"Using {dbName} with connection string = {_dbConnection}");
+        
+        using ICoverageRepository coverageRepository = new LoggingRepositoryDecorator(
+            new SqlCoverageRepository(_dbConnection, _databaseType), Logger);
+        
 
-        ITestRunner testRunner = new CmdTestRunner(_pathToTestsProject) { WriteOutput = _writeDebug };
+        ITestRunner testRunner = new CmdTestRunner(_pathToTestsProject, Logger);
 
         ICoverageExtractor coverageExtractor = new FileCoverageExtractorFromJson(_pathToDirectoryWithGit);
 
-        ICoverageInfo coverageInfo = new CoverageInfo(coverageRepository, testRunner, coverageExtractor);
+        ICoverageInfo coverageInfo = new CoverageInfo(coverageRepository, testRunner, coverageExtractor, Logger);
 
         IChanges changes = new Changes(
-            new GitChangedFiles(_pathToDirectoryWithGit, _commit1Hash, _commit2Hash));
+            new GitChangedFiles(_pathToDirectoryWithGit, _commit1Hash, _commit2Hash, Logger));
 
         List<string> testsThatDependsOnChanges =
             new TestImpactAnalysis.TestsThatDependsOnChanges(tests, coverageInfo, changes).ToList();
 
         ICoverageRecalculator coverageRecalculator =
-            new CoverageRecalculator(coverageRepository, testRunner, coverageExtractor);
+            new CoverageRecalculator(coverageRepository, testRunner, coverageExtractor, Logger);
         
         coverageRecalculator.Recalculate(testsThatDependsOnChanges);
 

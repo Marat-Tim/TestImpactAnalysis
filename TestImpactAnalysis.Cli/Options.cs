@@ -1,5 +1,5 @@
 ﻿using CommandLine;
-using TestImpactAnalysis.Coverage.Impl;
+using Microsoft.Extensions.Logging;
 using TestImpactAnalysis.Database;
 
 namespace TestImpactAnalysis.Cli;
@@ -27,6 +27,6 @@ public class Options
     [Option('s', "dbtype", Required = true, HelpText = "Type of database")]
     public DatabaseType DbType { get; set; }
     
-    [Option('v', "verbosity", Required = true, HelpText = "Logging detail level")]
-    public CmdTestRunner.OutputDetalization Verbosity { get; set; }
+    [Option('l', "log", Required = false, HelpText = "Should write log")]
+    public LogLevel LogLevel { get; set; }
 }
