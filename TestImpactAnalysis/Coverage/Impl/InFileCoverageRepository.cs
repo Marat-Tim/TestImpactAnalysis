@@ -46,4 +46,8 @@ public class InFileCoverageRepository : ICoverageRepository
         var json = JsonSerializer.Serialize(_testToCoverage);
         File.WriteAllText(_path, json);
     }
+
+    public void Dispose()
+    {
+    }
 }

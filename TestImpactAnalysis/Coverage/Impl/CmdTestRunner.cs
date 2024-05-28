@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 using System.Text;
+using Microsoft.Extensions.Logging;
 
 namespace TestImpactAnalysis.Coverage.Impl;
 
@@ -13,12 +14,13 @@ public class CmdTestRunner : ITestRunner
 
     private readonly string _projPath;
     
-    public CmdTestRunner(string projPath)
+    private readonly ILogger _logger;
+
+    public CmdTestRunner(string projPath, ILogger logger)
     {
         _projPath = projPath;
+        _logger = logger;
     }
-
-    public OutputDetalization WriteOutput { private get; init; }
 
     public string RunAndGetRawCoverage(string test)
     {
@@ -27,6 +29,7 @@ public class CmdTestRunner : ITestRunner
         if (Directory.Exists(testResultsFullPath))
         {
             Directory.Delete(testResultsFullPath, true);
+            _logger.LogDebug("Delete test results directory");
         }
 
         var startInfo = new ProcessStartInfo
@@ -44,31 +47,24 @@ public class CmdTestRunner : ITestRunner
         using (var process = new Process { StartInfo = startInfo })
         {
             process.Start();
+            _logger.LogDebug($"Start process fileName={startInfo.FileName} args={startInfo.Arguments}");
             process.WaitForExit();
+            _logger.LogDebug($"Finish process fileName={startInfo.FileName} args={startInfo.Arguments}");
             text = process.StandardOutput.ReadToEnd();
             path = (text.Split(Environment.NewLine).FirstOrDefault(str => str.Contains("coverage.json"))
                    ?? throw new Exception("File with coverage not found")).Trim();
         }
 
-        switch (WriteOutput)
+        if (_logger.IsEnabled(LogLevel.Debug))
         {
-            case OutputDetalization.None:
-                break;
-            case OutputDetalization.Minimal:
-                Console.WriteLine($"Run test {test}");
-                break;
-            case OutputDetalization.All:
-                Console.WriteLine(text);
-                break;
-            default:
-                throw new NotImplementedException("Unknown enum value");
+            _logger.LogDebug($"Run test {test}");
         }
+        else if (_logger.IsEnabled(LogLevel.Trace))
+        {
+            _logger.LogTrace(text);
+        }
+        
         var coverage = File.ReadAllText(path, Encoding.UTF8);
         return coverage;
-    }
-
-    public enum OutputDetalization
-    {
-        None, Minimal, All
     }
 }

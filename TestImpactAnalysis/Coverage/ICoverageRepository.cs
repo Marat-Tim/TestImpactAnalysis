@@ -1,6 +1,6 @@
 ﻿namespace TestImpactAnalysis.Coverage;
 
-public interface ICoverageRepository
+public interface ICoverageRepository : IDisposable
 {
     void Save(string test, ISet<string> coverage);
 

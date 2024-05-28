@@ -5,7 +5,7 @@ using AppContext = TestImpactAnalysis.Database.AppContext;
 
 namespace TestImpactAnalysis.Coverage.Impl;
 
-public class SqlCoverageRepository : ICoverageRepository, IDisposable
+public class SqlCoverageRepository : ICoverageRepository
 {
     private readonly AppContext _context; 
 

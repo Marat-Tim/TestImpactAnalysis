@@ -1,8 +1,12 @@
-﻿namespace TestImpactAnalysis.Coverage.Impl;
+﻿using Microsoft.Extensions.Logging;
+
+namespace TestImpactAnalysis.Coverage.Impl;
 
 public class CoverageRecalculator : ICoverageRecalculator
 {
     private readonly ICoverageExtractor _coverageExtractor;
+    
+    private readonly ILogger _logger;
 
     private readonly ICoverageRepository _coverageRepository;
 
@@ -10,11 +14,13 @@ public class CoverageRecalculator : ICoverageRecalculator
 
     public CoverageRecalculator(ICoverageRepository coverageRepository,
         ITestRunner testRunner,
-        ICoverageExtractor coverageExtractor)
+        ICoverageExtractor coverageExtractor,
+        ILogger logger)
     {
         _coverageRepository = coverageRepository;
         _testRunner = testRunner;
         _coverageExtractor = coverageExtractor;
+        _logger = logger;
     }
 
     public void Recalculate(IEnumerable<string> tests)
@@ -24,6 +30,7 @@ public class CoverageRecalculator : ICoverageRecalculator
             string rawCoverage = _testRunner.RunAndGetRawCoverage(test);
             var coverage = _coverageExtractor.ExtractFromRowData(rawCoverage);
             _coverageRepository.Save(test, coverage);
+            _logger.LogDebug($"Recalculate and save coverage for test {test}");
         }
     }
 }
